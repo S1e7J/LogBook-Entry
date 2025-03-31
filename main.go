@@ -11,6 +11,7 @@ import (
 type Arguments struct {
 	directory  string
 	title      string
+  fileTitle  string
 	categories string
 	template   string
 }
@@ -49,6 +50,7 @@ func getArguments() Arguments {
 	args := Arguments{
 		directory:  "_posts/",
 		title:      "<template>",
+    fileTitle:  "<template>",
 		categories: "",
 		template:   home + "/.config/entry/template.markdown",
 	}
@@ -69,6 +71,10 @@ func main() {
 		panic(err)
 	}
 
+  if strings.Contains(args.title, "-") {
+    args.fileTitle = strings.Title(strings.ReplaceAll(args.title, "-", " "))
+  }
+
 	now := time.Now()
 	date := now.Format("2006-01-02 15:04:05 -0700")
 
@@ -78,7 +84,7 @@ func main() {
 		args.title,
 	)
 
-	template = bytes.ReplaceAll(template, []byte("{title}"), []byte(args.title))
+	template = bytes.ReplaceAll(template, []byte("{title}"), []byte(args.fileTitle))
 	template = bytes.ReplaceAll(template, []byte("{date}"), []byte(date))
 	template = bytes.ReplaceAll(template, []byte("{categories}"), []byte(args.categories))
 	fmt.Println(string(template))
