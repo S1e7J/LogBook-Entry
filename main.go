@@ -33,6 +33,10 @@ func parseArgument(arg string, args *Arguments) {
 	if strings.Contains(arg, "--template=") {
 		args.template = strings.ReplaceAll(arg, "--template=", "")
 	}
+  if strings.Contains(arg, "--help") {
+    fmt.Println("Usage: entry --dir=<directory> --title=<title> --categories=<categories> --template=<template>")
+    os.Exit(0)
+  }
 }
 
 func getArguments() Arguments {
